@@ -1,7 +1,15 @@
-import React from "react";
+import BadgeFeature from "@/components/view/BadgeFeature";
+import Banner from "@/components/view/Banner";
+import CardCharacter from "@/components/view/CardCharacter";
 
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <section>
+      <Banner />
+      <BadgeFeature />
+      <CardCharacter />
+    </section>
+  );
 };
 
 export default Home;
