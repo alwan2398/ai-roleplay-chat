@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
-import {
-  Plus_Jakarta_Sans,
-  Geist_Mono,
-  Montserrat_Alternates,
-} from "next/font/google";
+import { Plus_Jakarta_Sans, Montserrat_Alternates } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toast";
 
 const fontPrimary = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -35,7 +31,10 @@ export default function RootLayout({
       lang="en"
       className={`${fontPrimary.variable} ${fontSecondary.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
