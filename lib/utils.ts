@@ -7,35 +7,42 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Formats text containing roleplay actions wrapped in single (*action*) or double (**action**) asterisks.
+ * Formats text containing roleplay actions wrapped in asterisks (*action* or **action**).
  * Hides literal asterisk characters in presentation layer and styles inner action text as grey italic,
  * while regular dialogue retains standard text color.
+ *
+ * Streaming-safe split/tokenizer approach:
+ * 1. Normalizes double asterisks `**` to single `*`.
+ * 2. Splits string by `*`.
+ * 3. Even indices (0, 2, 4...) are normal dialogue.
+ * 4. Odd indices (1, 3, 5...) are roleplay actions.
  */
 export function formatRoleplayText(text: string): React.ReactNode[] {
   if (!text) return [];
 
-  // Match text wrapped in single (*text*) or double (**text**) asterisks, handling trailing streaming actions
-  const regex = /(\*{1,2}[^*]+(?:\*{1,2}|$))/g;
-  const parts = text.split(regex);
+  // Normalize double asterisks (**) to single (*)
+  const normalized = text.replace(/\*\*/g, "*");
+
+  // Split by asterisk delimiter
+  const parts = normalized.split("*");
 
   return parts
-    .filter((part) => part.length > 0)
     .map((part, index) => {
-      if (part.startsWith("*")) {
-        // Strip opening and closing asterisks (* or **) for presentation
-        const innerText = part.replace(/^\*+|\*+$/g, "");
-        if (!innerText) return null;
+      if (!part) return null;
 
+      const isAction = index % 2 === 1;
+
+      if (isAction) {
         return React.createElement(
           "span",
           { key: index, className: "text-gray-400 italic" },
-          innerText
+          part
         );
       }
 
       return React.createElement(
         "span",
-        { key: index, className: "text-white" },
+        { key: index },
         part
       );
     })

@@ -260,7 +260,7 @@ export default function ChatRoomClient({
                   )}
 
                   <div
-                    className={`relative px-4 py-3 text-sm md:text-base leading-relaxed whitespace-pre-wrap ${
+                    className={`relative px-4 py-3 text-sm md:text-base leading-relaxed whitespace-pre-wrap wrap-break-word ${
                       isPersona
                         ? "bg-[#211633]/90 text-zinc-100 rounded-2xl rounded-tl-xs border border-violet-500/10 shadow-md"
                         : "bg-linear-to-r from-violet-600 to-indigo-600 text-white rounded-2xl rounded-tr-xs shadow-md shadow-violet-600/20"
