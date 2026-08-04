@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Compass, MessageCircle, Plus, Heart, User } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
+import { useAuthModal } from "@/context/AuthModalContext";
 
 const menuItems = [
   { label: "Browse", href: "/", icon: Compass },
@@ -14,6 +16,15 @@ const menuItems = [
 
 const Sidebar = () => {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const { openAuthModal } = useAuthModal();
+
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    if (href !== "/" && !session) {
+      e.preventDefault();
+      openAuthModal("signin");
+    }
+  };
 
   return (
     <aside
@@ -37,6 +48,7 @@ const Sidebar = () => {
             <Link
               key={item.href}
               href={item.href}
+              onClick={(e) => handleNavClick(e, item.href)}
               className={`
                 group flex items-center gap-3 px-3 py-2.5 rounded-lg
                 text-[0.9rem] font-medium

@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Sparkles, Plus } from "lucide-react";
@@ -10,6 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/lib/auth-client";
+import { useAuthModal } from "@/context/AuthModalContext";
 
 interface CharacterCardItemProps {
   character: Persona;
@@ -21,8 +25,22 @@ export function CharacterCardItem({
   character,
   priority = false,
 }: CharacterCardItemProps) {
+  const { data: session } = useSession();
+  const { openAuthModal } = useAuthModal();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (!session) {
+      e.preventDefault();
+      openAuthModal("signin");
+    }
+  };
+
   return (
-    <Link href={`/chat/${character.id}`} className="block group rounded-2xl md:rounded-3xl">
+    <Link
+      href={`/chat/${character.id}`}
+      onClick={handleCardClick}
+      className="block group rounded-2xl md:rounded-3xl"
+    >
       <Card className="group relative w-full aspect-[3/4.4] rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-violet-500 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(167,139,250,0.35)] bg-zinc-900 ring-0 p-0 gap-0">
         {/* Character Background Image */}
         <Image
@@ -70,6 +88,16 @@ export function CharacterCardItem({
 
 // Clean Empty State Component when DB has no personas
 export function EmptyPersonaState() {
+  const { data: session } = useSession();
+  const { openAuthModal } = useAuthModal();
+
+  const handleCreateClick = (e: React.MouseEvent) => {
+    if (!session) {
+      e.preventDefault();
+      openAuthModal("signin");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center p-8 md:p-14 text-center rounded-3xl border border-dashed border-zinc-800 bg-zinc-900/40 backdrop-blur-sm my-6">
       <div className="w-16 h-16 rounded-2xl bg-violet-600/10 border border-violet-500/20 flex items-center justify-center mb-4 text-violet-400">
@@ -82,7 +110,7 @@ export function EmptyPersonaState() {
         Belum ada persona AI yang tersimpan di database. Jadilah yang pertama
         untuk membuat karakter baru dan mulailah berinteraksi!
       </p>
-      <Link href="/create">
+      <Link href="/create" onClick={handleCreateClick}>
         <Button className="bg-violet-600 hover:bg-violet-500 text-white font-medium px-5 py-2.5 rounded-xl shadow-lg shadow-violet-600/25 transition-all flex items-center gap-2 cursor-pointer">
           <Plus className="w-4 h-4" />
           Buat Karakter Sekarang

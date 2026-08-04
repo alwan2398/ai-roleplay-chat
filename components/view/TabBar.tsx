@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Compass, MessageCircle, Plus, Heart, User } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
+import { useAuthModal } from "@/context/AuthModalContext";
 
 const tabItems = [
   { label: "Browse", href: "/", icon: Compass },
@@ -14,6 +16,15 @@ const tabItems = [
 
 const TabBar = () => {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const { openAuthModal } = useAuthModal();
+
+  const handleNavClick = (e: React.MouseEvent, href: string) => {
+    if (href !== "/" && !session) {
+      e.preventDefault();
+      openAuthModal("signin");
+    }
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden">
@@ -36,6 +47,7 @@ const TabBar = () => {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className="flex flex-col items-center justify-center gap-0.5 px-2 py-1 -mt-3"
                 >
                   <div className="flex items-center justify-center w-10 h-10 rounded-full bg-linear-to-br from-violet-500 to-purple-600 shadow-[0_0_20px_rgba(147,51,234,0.4)] transition-all duration-200 active:scale-95">
@@ -52,6 +64,7 @@ const TabBar = () => {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className="flex flex-col items-center justify-center gap-0.5 px-3 py-1 rounded-lg transition-colors duration-200 active:bg-white/4 min-w-14"
               >
                 <div className="relative">

@@ -1,14 +1,19 @@
 "use client";
 
+import { Suspense } from "react";
 import Navbar from "@/components/view/Navbar";
 import Sidebar from "@/components/view/Sidebar";
 import TabBar from "@/components/view/TabBar";
 import AuthModal from "@/components/view/AuthModal";
+import AuthQueryTrigger from "@/components/view/AuthQueryTrigger";
 import { AuthModalProvider } from "@/context/AuthModalContext";
 
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthModalProvider>
+      <Suspense fallback={null}>
+        <AuthQueryTrigger />
+      </Suspense>
       <div className="h-full min-h-screen bg-glow">
         <Navbar />
         <Sidebar />

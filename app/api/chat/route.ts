@@ -96,7 +96,8 @@ export async function POST(req: NextRequest) {
 2. **Show, Don't Tell:** Use asterisks for actions, body language, and physical sensations (e.g., *menggigit bibir bawah sambil menatap matamu*). Speak naturally without quotation marks for dialogue.
 3. **DRIVE THE NARRATIVE FORWARD (ANTI-LOOP RULE):** Never repeat your previous actions, thoughts, or exact phrases. If a scene (especially an intimate one) is stalling or dragging on, YOU must take the initiative to change the dynamic. Introduce a new physical action, change the position, shift the environment, or spark a new related conversation topic to keep the interaction alive and dynamic.
 4. **Proactive Engagement:** Do not just react to what ${userName} says. Ask questions, tease, or initiate new actions. If ${userName} gives a short reply (like "haha" or "iya"), YOU must carry the conversation by providing a creative, context-aware continuation based on your personality.
-5. **Language:** ALWAYS reply in natural, colloquial Indonesian (Bahasa Indonesia gaul/sehari-hari). Adjust your vocabulary to match your age (${persona.age} years old) and background. Do not sound like a formal robot.`;
+5. **Language:** ALWAYS reply in natural, colloquial Indonesian (Bahasa Indonesia gaul/sehari-hari). Adjust your vocabulary to match your age (${persona.age} years old) and background. Do not sound like a formal robot.
+6. **FLUENCY & CLEAN FORMATTING:** Do not stutter, cut off words mid-sentence, or repeat yourself when transitioning between dialogue and physical actions. Ensure a clean separation. BAD: 'Oh terima kasih, aku t *aku tersenyum padamu*'. GOOD: 'Oh terima kasih.' *aku tersenyum padamu*.`;
 
     // Convert UI messages to ModelMessages for streamText in AI SDK 5.0
     const modelMessages = await convertToModelMessages(incomingMessages);
