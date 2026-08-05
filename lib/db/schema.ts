@@ -1,4 +1,5 @@
-import { pgTable, text, timestamp, boolean, integer, uuid, pgEnum } from "drizzle-orm/pg-core";
+import { defineRelations } from "drizzle-orm";
+import { pgTable, text, timestamp, boolean, integer, uuid, pgEnum, unique } from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", ["user", "assistant"]);
 
@@ -78,5 +79,57 @@ export const messages = pgTable("messages", {
   content: text("content").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export const favorites = pgTable(
+  "favorites",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    personaId: uuid("persona_id")
+      .notNull()
+      .references(() => personas.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (table) => [
+    unique("favorites_user_id_persona_id_unique").on(
+      table.userId,
+      table.personaId
+    ),
+  ]
+);
+
+export const schemaRelations = defineRelations(
+  { user, personas, favorites },
+  (r) => ({
+    favorites: {
+      user: r.one.user({
+        from: r.favorites.userId,
+        to: r.user.id,
+      }),
+      persona: r.one.personas({
+        from: r.favorites.personaId,
+        to: r.personas.id,
+      }),
+    },
+    user: {
+      favorites: r.many.favorites({
+        from: r.user.id,
+        to: r.favorites.userId,
+      }),
+    },
+    personas: {
+      favorites: r.many.favorites({
+        from: r.personas.id,
+        to: r.favorites.personaId,
+      }),
+    },
+  })
+);
+
+
+
+
 
 

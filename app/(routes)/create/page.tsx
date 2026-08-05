@@ -81,19 +81,7 @@ const CreateCharacterPage = () => {
   return (
     <ImageKitProvider urlEndpoint={urlEndpoint}>
       <section className="min-h-screen pb-12">
-        <div className="fixed w-full z-50 flex justify-between items-center py-3 px-4 md:px-6 border-b border-white/6 bg-zinc-950/80 backdrop-blur-xl">
-          <Link
-            href={"/"}
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-          >
-            <ArrowBigLeft className="w-5 h-5 text-white" />
-            <span className="text-lg md:text-xl font-bold font-secondary text-white">
-              Kembali
-            </span>
-          </Link>
-        </div>
-
-        <div className="mt-20 max-w-2xl mx-auto px-4">
+        <div className="max-w-2xl mx-auto">
           {errorMsg && (
             <div className="mb-4 p-3 rounded-lg bg-red-500/20 border border-red-500/40 text-red-300 text-sm">
               {errorMsg}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, Plus } from "lucide-react";
+import { Sparkles, Plus, Heart } from "lucide-react";
 import { Persona } from "@/lib/db/queries/personas";
 import {
   Card,
@@ -14,25 +14,59 @@ import {
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
 import { useAuthModal } from "@/context/AuthModalContext";
+import { useOptimistic, useTransition } from "react";
+import { toggleFavoriteAction } from "@/lib/actions/favorite.actions";
 
 interface CharacterCardItemProps {
   character: Persona;
   priority?: boolean;
+  isFavorited?: boolean;
+  onFavoriteToggle?: (personaId: string, newIsFavorited: boolean) => void;
 }
 
 // Reusable Character Card Component built with Shadcn UI Card primitives & Drizzle Persona Schema
 export function CharacterCardItem({
   character,
   priority = false,
+  isFavorited = false,
+  onFavoriteToggle,
 }: CharacterCardItemProps) {
   const { data: session } = useSession();
   const { openAuthModal } = useAuthModal();
+  const [isPending, startTransition] = useTransition();
+
+  const [optimisticIsFavorited, setOptimisticIsFavorited] = useOptimistic(
+    isFavorited,
+    (_current, nextState: boolean) => nextState
+  );
 
   const handleCardClick = (e: React.MouseEvent) => {
     if (!session) {
       e.preventDefault();
       openAuthModal("signin");
     }
+  };
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!session) {
+      openAuthModal("signin");
+      return;
+    }
+
+    const nextState = !optimisticIsFavorited;
+    startTransition(async () => {
+      setOptimisticIsFavorited(nextState);
+      if (onFavoriteToggle) {
+        onFavoriteToggle(character.id, nextState);
+      }
+      const res = await toggleFavoriteAction(character.id);
+      if (!res.success) {
+        setOptimisticIsFavorited(optimisticIsFavorited);
+      }
+    });
   };
 
   return (
@@ -55,11 +89,29 @@ export function CharacterCardItem({
         {/* Dark Linear Gradient Overlay */}
         <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
 
-        {/* Gender Tag / Badge */}
-        <div className="absolute top-3 right-3 z-10">
+        {/* Top Header Overlay: Gender Tag + Heart Button */}
+        <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between">
+          {/* Gender Tag / Badge */}
           <span className="px-2.5 py-1 text-[10px] md:text-xs font-semibold rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-violet-300 capitalize tracking-wide">
             {character.gender}
           </span>
+
+          {/* Heart Icon Button */}
+          <button
+            type="button"
+            onClick={handleFavoriteClick}
+            disabled={isPending}
+            title={optimisticIsFavorited ? "Hapus dari Favorit" : "Tambah ke Favorit"}
+            className="p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hover:border-white/20 hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer group/heart focus:outline-none"
+          >
+            <Heart
+              className={`w-4 h-4 md:w-4.5 md:h-4.5 transition-colors ${
+                optimisticIsFavorited
+                  ? "fill-pink-500 text-pink-500"
+                  : "text-white/80 group-hover/heart:text-white"
+              }`}
+            />
+          </button>
         </div>
 
         {/* Card Content Overlay */}
@@ -122,12 +174,16 @@ export function EmptyPersonaState() {
 
 interface CardCharacterProps {
   personas: Persona[];
+  favoriteIds?: string[];
+  onFavoriteToggle?: (personaId: string, newIsFavorited: boolean) => void;
 }
 
-const CardCharacter = ({ personas }: CardCharacterProps) => {
+const CardCharacter = ({ personas, favoriteIds = [], onFavoriteToggle }: CardCharacterProps) => {
   if (!personas || personas.length === 0) {
     return <EmptyPersonaState />;
   }
+
+  const favoriteSet = new Set(favoriteIds);
 
   return (
     <div className="w-full my-6 select-none">
@@ -138,6 +194,8 @@ const CardCharacter = ({ personas }: CardCharacterProps) => {
             key={character.id}
             character={character}
             priority={index < 4}
+            isFavorited={favoriteSet.has(character.id)}
+            onFavoriteToggle={onFavoriteToggle}
           />
         ))}
       </div>

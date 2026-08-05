@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Trash2, MessageSquare, Loader2 } from "lucide-react";
+import { Search, Trash2, MessageSquare, Loader2, ArrowLeft } from "lucide-react";
 import { UserChatSummary } from "@/lib/db/queries/messages";
 import { deleteUserChat } from "@/lib/actions/chat.actions";
 import { Input } from "@/components/ui/input";
@@ -22,7 +22,7 @@ function formatChatTimestamp(dateInput: Date | string): string {
     date.getFullYear() === now.getFullYear();
 
   if (isToday) {
-    return date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   }
 
   const yesterday = new Date(now);
@@ -45,7 +45,7 @@ export default function ChatListClient({ initialChats }: ChatListClientProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const filteredChats = chats.filter((chat) =>
-    chat.personaName.toLowerCase().includes(searchQuery.toLowerCase())
+    chat.personaName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const handleDelete = async (e: React.MouseEvent, personaId: string) => {
@@ -67,13 +67,15 @@ export default function ChatListClient({ initialChats }: ChatListClientProps) {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4 py-4 md:py-6">
-      {/* Header Logo */}
+    <div className="w-full max-w-4xl mx-auto px-4 py-4 md:py-6">
+      {/* Top Navigation Back Link */}
       <div className="flex items-center justify-between mb-6">
-        <Link href="/" className="flex items-center">
-          <h1 className="text-2xl md:text-3xl font-bold font-secondary bg-linear-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
-            Love AI
-          </h1>
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-zinc-900/80 border border-white/10 text-white/80 hover:text-white hover:bg-zinc-800 transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4 text-white" />
+          <span className="text-sm font-semibold text-white">Kembali</span>
         </Link>
       </div>
 
@@ -160,7 +162,9 @@ export default function ChatListClient({ initialChats }: ChatListClientProps) {
             <MessageSquare className="w-6 h-6" />
           </div>
           <h3 className="text-base font-semibold text-white mb-1">
-            {searchQuery ? "Tidak ada karakter yang cocok" : "Belum Ada Riwayat Chat"}
+            {searchQuery
+              ? "Tidak ada karakter yang cocok"
+              : "Belum Ada Riwayat Chat"}
           </h3>
           <p className="text-xs text-zinc-400 max-w-sm mb-4">
             {searchQuery
