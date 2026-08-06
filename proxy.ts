@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Check for Better Auth session cookie (supports both standard dev HTTP and secure prod HTTPS cookies)
   const sessionToken =
     request.cookies.get("better-auth.session_token")?.value ||
@@ -14,5 +14,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/chat/:path*", "/explore", "/create"],
+  matcher: ["/chat/:path*", "/explore", "/create", "/profile"],
 };
