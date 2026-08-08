@@ -12,6 +12,7 @@ export interface CreatePersonaInput {
   age: number;
   gender: string;
   description: string;
+  backstory: string;
   greeting: string;
 }
 
@@ -33,7 +34,14 @@ export async function createPersona(data: CreatePersonaInput) {
     if (!data.imageUrl) {
       return { success: false, error: "Foto karakter wajib diunggah." };
     }
-    if (!data.name || !data.age || !data.gender || !data.description || !data.greeting) {
+    if (
+      !data.name ||
+      !data.age ||
+      !data.gender ||
+      !data.description ||
+      !data.backstory ||
+      !data.greeting
+    ) {
       return { success: false, error: "Semua kolom input wajib diisi." };
     }
 
@@ -47,6 +55,7 @@ export async function createPersona(data: CreatePersonaInput) {
         age: Number(data.age),
         gender: data.gender,
         description: data.description,
+        backstory: data.backstory,
         greeting: data.greeting,
       })
       .returning();

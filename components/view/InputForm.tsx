@@ -12,6 +12,7 @@ export interface CharacterFormData {
   name: string;
   age: string;
   description: string;
+  backstory: string;
   firstMessage: string;
 }
 
@@ -23,10 +24,11 @@ interface InputFormProps {
 }
 
 const DEFAULT_FORM_DATA: CharacterFormData = {
-  gender: "male",
+  gender: "female",
   name: "",
   age: "",
   description: "",
+  backstory: "",
   firstMessage: "hallo, siapa kamu?",
 };
 
@@ -58,7 +60,7 @@ const InputForm: React.FC<InputFormProps> = ({
   });
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -96,7 +98,7 @@ const InputForm: React.FC<InputFormProps> = ({
                 "flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
                 formData.gender === option.value
                   ? "bg-[#333336] text-white shadow-sm"
-                  : "text-gray-500 hover:text-gray-300"
+                  : "text-gray-500 hover:text-gray-300",
               )}
             >
               {option.label}
@@ -144,9 +146,25 @@ const InputForm: React.FC<InputFormProps> = ({
           onChange={handleChange}
           className={cn(
             INPUT_BASE_CLASSES,
-            "h-32 rounded-lg overflow-hidden resize-none"
+            "h-32 rounded-lg overflow-hidden resize-none",
           )}
           placeholder="Masukkan deskripsi karakter"
+          required
+        />
+      </div>
+
+      {/* Backstory */}
+      <div className="mt-5">
+        <FormLabel label="Backstory Karakter" />
+        <Textarea
+          name="backstory"
+          value={formData.backstory}
+          onChange={handleChange}
+          className={cn(
+            INPUT_BASE_CLASSES,
+            "h-32 rounded-lg overflow-hidden resize-none",
+          )}
+          placeholder="Apa background cerita dari karakter?"
           required
         />
       </div>
@@ -160,7 +178,7 @@ const InputForm: React.FC<InputFormProps> = ({
           onChange={handleChange}
           className={cn(
             INPUT_BASE_CLASSES,
-            "h-32 rounded-lg overflow-hidden resize-none"
+            "h-32 rounded-lg overflow-hidden resize-none",
           )}
           placeholder="hallo, siapa kamu?"
           required
@@ -183,4 +201,3 @@ const InputForm: React.FC<InputFormProps> = ({
 };
 
 export default InputForm;
-

@@ -1,5 +1,14 @@
 import { defineRelations } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, integer, uuid, pgEnum, unique } from "drizzle-orm/pg-core";
+import {
+  pgTable,
+  text,
+  timestamp,
+  boolean,
+  integer,
+  uuid,
+  pgEnum,
+  unique,
+} from "drizzle-orm/pg-core";
 
 export const roleEnum = pgEnum("role", ["user", "assistant"]);
 
@@ -63,6 +72,7 @@ export const personas = pgTable("personas", {
   age: integer("age").notNull(),
   gender: text("gender").notNull(),
   description: text("description").notNull(),
+  backstory: text("backstory").notNull(),
   greeting: text("greeting").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
@@ -95,9 +105,9 @@ export const favorites = pgTable(
   (table) => [
     unique("favorites_user_id_persona_id_unique").on(
       table.userId,
-      table.personaId
+      table.personaId,
     ),
-  ]
+  ],
 );
 
 export const schemaRelations = defineRelations(
@@ -125,11 +135,5 @@ export const schemaRelations = defineRelations(
         to: r.favorites.personaId,
       }),
     },
-  })
+  }),
 );
-
-
-
-
-
-

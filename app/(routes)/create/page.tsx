@@ -43,6 +43,7 @@ const CreateCharacterPage = () => {
         age: Number(formData.age),
         gender: formData.gender,
         description: formData.description,
+        backstory: formData.backstory,
         greeting: formData.firstMessage,
       });
 

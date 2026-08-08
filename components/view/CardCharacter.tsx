@@ -37,7 +37,7 @@ export function CharacterCardItem({
 
   const [optimisticIsFavorited, setOptimisticIsFavorited] = useOptimistic(
     isFavorited,
-    (_current, nextState: boolean) => nextState
+    (_current, nextState: boolean) => nextState,
   );
 
   const handleCardClick = (e: React.MouseEvent) => {
@@ -90,7 +90,7 @@ export function CharacterCardItem({
         <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent pointer-events-none" />
 
         {/* Top Header Overlay: Gender Tag + Heart Button */}
-        <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between">
+        <div className="absolute top-1 left-2 right-2 z-20 flex items-center justify-between">
           {/* Gender Tag / Badge */}
           <span className="px-2.5 py-1 text-[10px] md:text-xs font-semibold rounded-full bg-black/60 backdrop-blur-md border border-white/10 text-violet-300 capitalize tracking-wide">
             {character.gender}
@@ -101,7 +101,9 @@ export function CharacterCardItem({
             type="button"
             onClick={handleFavoriteClick}
             disabled={isPending}
-            title={optimisticIsFavorited ? "Hapus dari Favorit" : "Tambah ke Favorit"}
+            title={
+              optimisticIsFavorited ? "Hapus dari Favorit" : "Tambah ke Favorit"
+            }
             className="p-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 hover:border-white/20 hover:scale-110 active:scale-95 transition-all duration-200 cursor-pointer group/heart focus:outline-none"
           >
             <Heart
@@ -178,7 +180,11 @@ interface CardCharacterProps {
   onFavoriteToggle?: (personaId: string, newIsFavorited: boolean) => void;
 }
 
-const CardCharacter = ({ personas, favoriteIds = [], onFavoriteToggle }: CardCharacterProps) => {
+const CardCharacter = ({
+  personas,
+  favoriteIds = [],
+  onFavoriteToggle,
+}: CardCharacterProps) => {
   if (!personas || personas.length === 0) {
     return <EmptyPersonaState />;
   }

@@ -19,6 +19,7 @@ export async function getUserFavoritePersonas(userId: string): Promise<Persona[]
         age: personas.age,
         gender: personas.gender,
         description: personas.description,
+        backstory: personas.backstory,
         greeting: personas.greeting,
         createdAt: personas.createdAt,
       })
