@@ -245,7 +245,7 @@ export default function ChatRoomClient({
                   isPersona ? "items-start" : "items-end"
                 } space-y-1`}
               >
-                <div className="flex items-start gap-2.5 max-w-[85%] sm:max-w-[75%]">
+                <div className="flex items-start gap-2.5 max-w-[90%] md:max-w-[75%]">
                   {/* Show persona avatar beside assistant messages */}
                   {isPersona && (
                     <div className="relative w-8 h-8 rounded-full overflow-hidden border border-violet-500/30 shrink-0 mt-0.5">
@@ -260,13 +260,15 @@ export default function ChatRoomClient({
                   )}
 
                   <div
-                    className={`relative px-4 py-3 text-sm md:text-base leading-relaxed whitespace-pre-wrap wrap-break-word ${
+                    className={`relative h-auto min-h-min flex flex-col px-4 py-3 text-sm md:text-base ${
                       isPersona
                         ? "bg-[#211633]/90 text-zinc-100 rounded-2xl rounded-tl-xs border border-violet-500/10 shadow-md"
                         : "bg-linear-to-r from-violet-600 to-indigo-600 text-white rounded-2xl rounded-tr-xs shadow-md shadow-violet-600/20"
                     }`}
                   >
-                    {formatRoleplayText(rawContent)}
+                    <div className="wrap-break-word whitespace-pre-wrap leading-relaxed">
+                      {formatRoleplayText(rawContent)}
+                    </div>
                   </div>
                 </div>
 
