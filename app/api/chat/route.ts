@@ -112,7 +112,7 @@ You may use ${userName}'s name ONLY in spoken dialogue (e.g., '${userName}, ayo 
 
     // Stream response using OpenRouter model with optimized parameters for natural Indonesian
     const result = streamText({
-      model: openrouter("nousresearch/hermes-4-70b"),
+      model: openrouter("nousresearch/hermes-3-llama-3.1-70b"),
       system: systemPrompt,
       messages: modelMessages,
       temperature: 0.8,
