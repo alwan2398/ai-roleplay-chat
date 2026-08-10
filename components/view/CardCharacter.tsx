@@ -75,7 +75,7 @@ export function CharacterCardItem({
       onClick={handleCardClick}
       className="block group rounded-2xl md:rounded-3xl"
     >
-      <Card className="group relative w-full aspect-[3/4.4] rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-violet-500 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(167,139,250,0.35)] bg-zinc-900 ring-0 p-0 gap-0">
+      <Card className="group relative w-full aspect-[2/3.4] rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer border-2 border-transparent hover:border-violet-500 transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(167,139,250,0.35)] bg-zinc-900 ring-0 p-0 gap-0">
         {/* Character Background Image */}
         <Image
           src={character.imageUrl}
@@ -117,7 +117,7 @@ export function CharacterCardItem({
         </div>
 
         {/* Card Content Overlay */}
-        <CardContent className="absolute bottom-0 inset-x-0 p-3.5 md:p-4 z-10 flex flex-col gap-1 text-white bg-transparent border-none">
+        <CardContent className="absolute bottom-0 inset-x-0 p-3.5 md:p-2 z-10 flex flex-col gap-1 text-white bg-transparent border-none">
           <CardHeader className="p-0 gap-0">
             <CardTitle className="flex items-baseline gap-1.5 p-0">
               <span className="text-xl md:text-2xl font-bold tracking-tight text-white group-hover:text-violet-300 transition-colors">

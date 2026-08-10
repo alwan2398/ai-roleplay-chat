@@ -3,7 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, Trash2, MessageSquare, Loader2, ArrowLeft } from "lucide-react";
+import {
+  Search,
+  Trash2,
+  MessageSquare,
+  Loader2,
+  ArrowLeft,
+} from "lucide-react";
 import { UserChatSummary } from "@/lib/db/queries/messages";
 import { deleteUserChat } from "@/lib/actions/chat.actions";
 import { Input } from "@/components/ui/input";
@@ -117,7 +123,7 @@ export default function ChatListClient({ initialChats }: ChatListClientProps) {
                       alt={chat.personaName}
                       fill
                       sizes="48px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="object-cover object-top group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
 
