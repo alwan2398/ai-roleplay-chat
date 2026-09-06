@@ -4,7 +4,7 @@ const Banner = () => {
   return (
     <div className="w-full max-h-105 overflow-hidden rounded-xl">
       <Image
-        src="/banner-img.webp"
+        src="/img-banner.webp"
         alt="Banner"
         width={1920}
         height={1080}

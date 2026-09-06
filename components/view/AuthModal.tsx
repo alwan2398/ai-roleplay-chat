@@ -60,7 +60,7 @@ const AuthModal = () => {
 
   if (!isOpen) return null;
 
-  const bgImageSrc = mode === "signin" ? "/bg-signin.webp" : "/bg-signup.webp";
+  const bgImageSrc = mode === "signin" ? "/bg-auth.webp" : "/bg-auth.webp";
 
   const handleEmailAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,7 +75,10 @@ const AuthModal = () => {
           callbackURL: "/",
         });
         if (error) {
-          setErrorMessage(error.message || "Failed to sign in. Please check your credentials.");
+          setErrorMessage(
+            error.message ||
+              "Failed to sign in. Please check your credentials.",
+          );
         } else {
           closeAuthModal();
         }
